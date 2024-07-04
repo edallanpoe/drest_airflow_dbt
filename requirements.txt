@@ -1,0 +1,4 @@
+minio
+requests
+apache-airflow-providers-docker
+apache-airflow-providers-slack
