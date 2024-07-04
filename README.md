@@ -1,6 +1,5 @@
 # Technology Stack
-## DBT
-[reference](https://s.monica.im/search/I-require-a-zahwxrb5v4XuaSi2ZKavEb)
+## [DBT](https://s.monica.im/search/I-require-a-zahwxrb5v4XuaSi2ZKavEb)
 
 It’s a decoupled data analytics engine with processing in batch loads. The transformation runs within the data warehouse and data never exits its domain. Data transformations are replicable across different data environments.
 
@@ -12,13 +11,13 @@ It’s SQL-first transformation workflow to quickly deploy analytics code in a m
 
 DBT enables full version control and CI/CD capabilities throughout environments, which also brings the capacity to test and document each component, and the development aims to write modular data transformations in .sql or .py files – dbt handles the chore of dependency management. DBT's pre-packaged and custom testing helps developers create a “paper trail” of validated assumptions for data collaborators. Auto-generated dependency graphs and dynamic data dictionaries promote trust and transparency for data consumers.
 
-DBT supports various databases and data warehouses, including PostgreSQL, BigQuery, Redshift, Snowflake, and more. https://cookjack248.medium.com/dbt-core-dbt-cloud-whats-the-difference-12993acc890a 
+DBT supports various databases and data warehouses, including PostgreSQL, BigQuery, Redshift, Snowflake, and more [[ref](https://cookjack248.medium.com/dbt-core-dbt-cloud-whats-the-difference-12993acc890a)]
 
 #### DBT Cloud
 Managed cloud environment for developing, testing, scheduling, and data mining on a well-provisioned web-based UI. https://www.getdbt.com/signup 
 
 #### DBT Core
-CLI for working with DBT projects either using a terminal or code editor like VSCode. https://docs.getdbt.com/docs/core/installation-overview 
+CLI for working with DBT projects either using a terminal or code editor like VSCode [[ref](https://docs.getdbt.com/docs/core/installation-overview)].
 
 
 ### DBT Models
@@ -27,7 +26,7 @@ The DBT  models act as blueprints of tables or views representing entities in a 
 #### Key Components:
 * Semantic layer: describes the data model, including model name, description, and references to other models.
 
-  * **MetricFlow**: It’s responsible for SQL query construction and defines the specifications for DBT semantic models and metrics. It takes the information from the semantic models and metric YAML configurations to construct the SQL on-flight before running it within the data warehouse. https://docs.getdbt.com/docs/build/metricflow-commands 
+  * **MetricFlow**: It’s responsible for SQL query construction and defines the specifications for DBT semantic models and metrics. It takes the information from the semantic models and metric YAML configurations to construct the SQL on-flight before running it within the data warehouse [[ref](https://docs.getdbt.com/docs/build/metricflow-commands)]. 
 
   * **Semantic Models**: serve as the foundation blocks of the semantic layer, which are built on top of existing DBT models to describe the data in a 1-to-1 relationship.
 
@@ -159,7 +158,7 @@ Variables can be referenced at this configuration level: https://docs.getdbt.com
 
 
 ### Snapshots
-Allows to preserve points in time of the data to analyze trends and track changes. In DBT, snapshots are essentially select statements defined within a snapshot block in a .sql file, to register data states in mutable tables. https://docs.getdbt.com/docs/build/snapshots#configuring-snapshots 
+Allows to preserve points in time of the data to analyze trends and track changes. In DBT, snapshots are essentially select statements defined within a snapshot block in a .sql file, to register data states in mutable tables [[ref](https://docs.getdbt.com/docs/build/snapshots#configuring-snapshots)]
 
 DBT provides options for handling data changes, such as snapshots for append tables. You can modify the logic as needed, without losing historical data, by using the --full-refresh command
 
@@ -229,7 +228,7 @@ For this configuration to work with the timestamp strategy, the configured updat
 ![alt text](docs/snapshots_def_007.png)
 
 ### Tests
-Tests in DBT are assertions made about models, sources, seeds, and snapshots within a project to ensure data quality and accuracy. These tests are created by running the command dbt test. Tests support various types like unique and not_null. The data test properties are added to the tests.yml within the models folder. https://docs.getdbt.com/reference/resource-properties/data-tests 
+Tests in DBT are assertions made about models, sources, seeds, and snapshots within a project to ensure data quality and accuracy. These tests are created by running the command dbt test. Tests support various types like unique and not_null. The data test properties are added to the tests.yml within the models folder [[ref](https://docs.getdbt.com/reference/resource-properties/data-tests)]
  
 ![alt text](docs/tests_001.png)
 
@@ -321,8 +320,7 @@ models:
                 - not_null
 ```
 
-### The 6 steps in an ELT workflow:
-https://www.kdnuggets.com/2021/07/dbt-data-transformation-tutorial.html 
+### [The 6 steps in an ELT workflow](https://www.kdnuggets.com/2021/07/dbt-data-transformation-tutorial.html)
 1. **Extract and Load**: It’s performed by a tool external to DBT. 
 
 2. **Data Exploration**: It’s performed at the data warehouse level, to understand the data loaded in there.
@@ -376,8 +374,8 @@ sample_dbt_project
 └── tests
 ```
 
-## Airflow
-[reference](https://s.monica.im/search/I-require-a-QxFo5NzrZMqiXYQBdcZqhk)
+
+## [Airflow](https://s.monica.im/search/I-require-a-QxFo5NzrZMqiXYQBdcZqhk)
 
 Data orchestration is the process of coordinating and automating ETL and integrations across several systems and processes to ensure efficient and reliable workflows. Python is the Programming language for Airflow.
 
@@ -428,9 +426,10 @@ Activities in the Apache Airflow context refer to the tasks that are executed wi
 
 **Operators**: Operators are the building blocks of tasks in Apache Airflow. They define how tasks run and what they do. Operators abstract the execution logic of each task, allowing for better code reusability and flexibility in defining workflows.
 
-**Best Practices**: When designing activities in Apache Airflow, it is important to keep tasks modular, maintainable, and idempotent (stateless). It is recommended to use built-in operators wherever possible and follow best practices for task design and workflow management.
+> [!TIP]
+> #### Best Practices
+> When designing activities in Apache Airflow, it is important to keep tasks modular, maintainable, and idempotent (stateless). It is recommended to use built-in operators wherever possible and follow best practices for task design and workflow management.
 
-By understanding how activities interact, leveraging operators effectively, and following best practices, users can create robust and efficient workflows within the Apache Airflow framework.
 
 ### DAGs (Directed Acyclic Graphs)
 In Apache Airflow, DAGs are at the core of organizing and executing tasks, which are a collection of tasks to run on an orchestrated basis, structured in a graph structure to reflect their dependencies and relationships, meaning that the prior tasks must finish successfully before executing the downstream tasks unless the trigger comes from a failure status.
@@ -441,8 +440,8 @@ Main types of relationships:
 
 * **Downstream relationship**: On the other hand, downstream tasks depend on the completion of the current task. These tasks will only be executed if the current task is successful.
 
-* **Cross-Dependency**: Tasks can have dependencies on each other in complex ways, allowing for intricate workflows. https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/external_task_sensor.html 
-
+* **Cross-Dependency**: Tasks can have dependencies on each other in complex ways, allowing for intricate workflows [[ref](https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/external_task_sensor.html)]
+  
 #### How DAGs work:
 1. **Task Dependencies**: DAGs define the relationships between tasks, specifying the order in which tasks should be executed. Tasks can be dependent on the success, failure, or completion of other tasks within the same DAG.
 
@@ -461,7 +460,7 @@ Main types of relationships:
 
 
 ### Operators
-Resemble a traditional workflow action in the sense that is a preexisting library of built-in operators, having PythonOperator as the most basic operator, to run a Python function as a task. These operators can then be extended to support a broad set of actions or processes with external systems like DB, HTTP endpoints, cloud data services, etc… Full list of build operators https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/operators/index.html - on the other hand it’s possible to build custom operators using Airflow Plugins, which are imported by Airflow from the folder $AIRFLOW_HOME/plugins. https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/plugins.html and https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html 
+Resemble a traditional workflow action in the sense that is a preexisting library of built-in operators, having PythonOperator as the most basic operator, to run a Python function as a task. These operators can then be extended to support a broad set of actions or processes with external systems like DB, HTTP endpoints, cloud data services, etc… Full list of build operators [[ref](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/operators/index.html)] - on the other hand it’s possible to build custom operators using Airflow Plugins, which are imported by Airflow from the folder $AIRFLOW_HOME/plugins [[ref](https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/plugins.html)] and [[ref](https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html)].
 
 ### Taskflow
 Allows to define tasks and their dependencies at a higher level of abstraction, making easier to manage complex workflows. It simplifies by a lot the process of building workflows by chaining operators together. the TaskFlow API was introduced to facilitate the creation of DAGs by abstracting the handling of XComs, which are used to pass data between tasks. Task dependencies are automatically generated within TaskFlows based on the functional invocation of tasks. Additionally, decorators such as @task can be utilized to pass outputs from one task as inputs to another.
@@ -491,18 +490,19 @@ Additionally, sensors can be used to establish cross-DAG dependencies, where tas
 
 One significant distinction between sensors and regular operators is that sensors are designed to pause the execution of a task until a specific external state is achieved. This could include waiting for a file to appear in a directory, a database record to be updated, or an external API endpoint to return a specific status. In contrast, regular operators execute their tasks immediately without any dependency on external conditions.
 
-#### Best Pratices
-When working with sensors in Apache Airflow, it is essential to follow some best practices to ensure smooth and efficient workflow automation. Some key best practices include:
-
-* **Choose the Right Sensor Type**: Apache Airflow provides various sensor types such as HttpSensor, S3KeySensor, and custom sensors. It is crucial to select the appropriate sensor type based on the specific task requirements.
-
-* **Custom Sensor Development**: Airflow allows extending its functionality by creating custom operators and sensors tailored to meet specific business needs. Therefore, consider developing custom sensors if the built-in sensors do not fulfill your requirements.
-
-* **Avoid Direct Database Manipulation**: Modifying the Airflow metadatabase or directly interacting with it without following best practices may lead to issues. Instead, creating SQL sensors for the Airflow metadatabase is recommended.
-
-* **Task Timeout Management**: Understanding and configuring task timeouts is crucial for ensuring the proper execution and monitoring of tasks in Airflow. It is advisable to learn about common fixes and best practices related to task timeouts.
-
-* **Performance Tuning**: For optimal performance of Apache Airflow on platforms like Amazon MWAA, following the recommended best practices for tuning and performance optimization is crucial. This includes configuring parameters and settings to enhance the overall workflow efficiency.
+> [!TIP]
+> #### Best Pratices
+> When working with sensors in Apache Airflow, it is essential to > follow some best practices to ensure smooth and efficient > workflow automation. Some key best practices include:
+> 
+> * **Choose the Right Sensor Type**: Apache Airflow provides > various sensor types such as HttpSensor, S3KeySensor, and custom > sensors. It is crucial to select the appropriate sensor type > based on the specific task requirements.
+> 
+> * **Custom Sensor Development**: Airflow allows extending its > functionality by creating custom operators and sensors tailored > to meet specific business needs. Therefore, consider developing > custom sensors if the built-in sensors do not fulfill your > requirements.
+> 
+> * **Avoid Direct Database Manipulation**: Modifying the Airflow > metadatabase or directly interacting with it without following > best practices may lead to issues. Instead, creating SQL sensors > for the Airflow metadatabase is recommended.
+> 
+> * **Task Timeout Management**: Understanding and configuring > task timeouts is crucial for ensuring the proper execution and > monitoring of tasks in Airflow. It is advisable to learn about > common fixes and best practices related to task timeouts.
+> 
+> * **Performance Tuning**: For optimal performance of Apache > Airflow on platforms like Amazon MWAA, following the recommended > best practices for tuning and performance optimization is > crucial. This includes configuring parameters and settings to > enhance the overall workflow efficiency.
 
 ### Plugins
 Custom extensions that enhance the core functionality of Airflow. It’s to extend the platform’s capabilities by adding custom operators, sensors, hooks, executors, and even web views. These plugins are automatically imported when Airflow starts, taking a source from the plugins folder. 
@@ -535,32 +535,55 @@ To set up notifications in Apache Airflow, you have several options available de
 ##### Slack Notifications:
 The Slack notifier in Apache Airflow allows users to send messages to a Slack channel. You can configure task alerts to be sent directly to Slack channels.
 
-Install necessary dependencies for Slack notifications using [``pip install apache-airflow[slack]``](https://stackoverflow.com/questions/53098806/airflow-slack-notification-im-trying-to-configure-slack-notification-when-my)
+Install necessary dependencies for Slack notifications using <code style="background:rgb(45, 67, 126)">[pip install apache-airflow[slack]](https://stackoverflow.com/questions/53098806/airflow-slack-notification-im-trying-to-configure-slack-notification-when-my)</code>
 
-Explore the How-to Guide for Slack notifications on the Apache Airflow website for detailed instructions. https://airflow.apache.org/docs/apache-airflow-providers-slack/stable/notifications/slack_notifier_howto_guide.html 
+Explore the How-to Guide for Slack notifications on the Apache Airflow website for detailed instructions [[ref](https://airflow.apache.org/docs/apache-airflow-providers-slack/stable/notifications/slack_notifier_howto_guide.html)].
 
 
 ##### Email Notifications:
 Apache Airflow provides flexibility in setting up email notifications for task failures, retries, or successes 
 
-Configure email alerts within your Airflow tasks to receive notifications via email. https://www.restack.io/docs/airflow-knowledge-email-failure-alerts-notifications-configuration
+Configure email alerts within your Airflow tasks to receive notifications via email. [[ref](https://www.restack.io/docs/airflow-knowledge-email-failure-alerts-notifications-configuration)]
 
 ##### Custom Python Functions:
-You can also create custom Python functions to trigger notifications or alerts based on specific conditions within your DAGs. https://medium.com/@quedi.zata/alerting-task-failed-in-dags-airflow-to-slack-channel-5e206b3e30a6
+You can also create custom Python functions to trigger notifications or alerts based on specific conditions within your DAGs [[ref](https://medium.com/@quedi.zata/alerting-task-failed-in-dags-airflow-to-slack-channel-5e206b3e30a6)].
 
 #### Callback Options
 In the context of Apache Airflow, besides notifiers, there are several available callback options that can be utilized to trigger actions based on specific events or states within tasks and Directed Acyclic Graphs (DAGs).
 
-* **Task Callbacks**: Task callbacks allow users to define actions triggered by changes in the state of individual tasks https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/callbacks.html. These callbacks can be set to execute on task success, failure, retry, or upon reaching a specific state.
+* **Task Callbacks**: Task callbacks allow users to define actions triggered by changes in the state of individual tasks [[ref](https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/callbacks.html)]. These callbacks can be set to execute on task success, failure, retry, or upon reaching a specific state.
 
-* **DAG Callbacks**: Similar to task callbacks, DAG callbacks enable users to perform actions based on changes across all tasks within a DAG https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/callbacks.html. This provides a broader scope for monitoring and responding to overall DAG execution.
+* **DAG Callbacks**: Similar to task callbacks, DAG callbacks enable users to perform actions based on changes across all tasks within a DAG [[ref](https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/callbacks.html)]. This provides a broader scope for monitoring and responding to overall DAG execution.
 
-* **on_success_callback and on_failure_callback**: These callback options in Apache Airflow allow users to define specific actions to be taken when tasks succeed or fail https://stackoverflow.com/questions/56697838/how-to-pass-parameters-to-airflow-on-success-callback-and-on-failure-callback. This provides flexibility in handling task outcomes based on customized requirements.
+* **on_success_callback and on_failure_callback**: These callback options in Apache Airflow allow users to define specific actions to be taken when tasks succeed or fail [[ref](https://stackoverflow.com/questions/56697838/how-to-pass-parameters-to-airflow-on-success-callback-and-on-failure-callback)]. This provides flexibility in handling task outcomes based on customized requirements.
 
-* **Pre-execution Callbacks**: Pre-execution callbacks are triggered before executing a task and can be used to perform tasks such as configuration setup or environment checks https://stackoverflow.com/questions/57515434/why-do-i-get-no-such-table-error-when-installing-apache-airflow-on-mac. These callbacks help ensure that necessary conditions are met before task execution.
+* **Pre-execution Callbacks**: Pre-execution callbacks are triggered before executing a task and can be used to perform tasks such as configuration setup or environment checks [[ref](https://stackoverflow.com/questions/57515434/why-do-i-get-no-such-table-error-when-installing-apache-airflow-on-mac)]. These callbacks help ensure that necessary conditions are met before task execution.
 
+### Pools
+Is a feature that allows to limit the execution parallelism on specific sets of tasks. This then helps to manage the allocation of resources, prioritize taks and prevent over-utilization within the workflows. 
+
+#### Resource Management:
+Pools are utilized to limit the concurrency of a specific set of tasks within Airflow. By defining pools, you can allocate a maximum number of resources or slots for executing tasks concurrently [[ref](https://s.monica.im/search/What-is-a-po-rFKofzw5ytnt4mJg2SMEvH?pro=1)]. This allocation helps in avoiding resource contention and ensures that tasks are executed efficiently without overwhelming the system.
+
+#### Task Parallelism:
+With pools in Apache Airflow, you can regulate the parallel execution of tasks, ensuring that only a certain number of tasks run simultaneously [[ref](https://s.monica.im/search/What-is-a-po-rFKofzw5ytnt4mJg2SMEvH?pro=1)]. This control over parallelism can be beneficial in scenarios where you need to restrict the number of tasks executing concurrently to prevent system overload or optimize resource utilization.
+
+#### Practical Implementation:
+To implement pools in Apache Airflow, you can define them in your DAG definition file. By assigning tasks to specific pools, you can enforce limitations on how many instances of those tasks can run concurrently, ensuring efficient resource management and improved task scheduling within your workflows.
 
 ## Airflow - Hands On!
+### Configuring Slack as Alerting Channel
+1. Install Python package: <code style="background:rgb(45, 67, 126)">[**apache-airflow-providers-slack**](https://pypi.org/project/apache-airflow-providers-slack/)</code>
+2. Create or select a dedicated workspace in Slack.
+3. Go to: https://api.slack.com and create a new app from scratch.
+   ![alt text](docs/create_app_slack.png)
+4. Once the app has been created, under the section ``Add features`` go to the option ``Permissions`` and under the section ``Scopes`` enable the scopes:
+   * **``chat:write``** to enable the notifier to write into the workspace.
+   * **``chat:write.public``** to enable the notifier to write into the channels where the app isn't a member. 
+5. Install the app into the workspace.
+   ![alt text](docs/install_app_slack.png)
+6. This will provide the token to connect the Slack notifier.
+
 ### Tips:
 * **NEVER** write the logic of Python functions in the DAG file, always create a Python module to define the business logic and then import it into the DAG.
 
@@ -580,23 +603,42 @@ In the context of Apache Airflow, besides notifiers, there are several available
 * Develop as modular as possible, utilizing the functional programming pattern.
 
 * export connections and configurations with command ``astro dev object export`` and import them into new env running the command ``astro dev object import --connections .env``
+  
+* #### Backfill & Catchup:
+  * ##### Catchup
+    When catchup is enabled Airflow will run all the times between the start_date and current date according to the schedule, in this case it'll run 14 times to catchup the DAG with the currentruns.
+    > [!NOTE]
+    > It's strongly recommended to set ``catchup=False`` unless necessary, otherwise it'll N times intervals to catch up with the current time.
 
-### Configure Slack
-#### Setup
-1. Install Python package: [``apache-airflow-providers-slack ``](https://pypi.org/project/apache-airflow-providers-slack/)
-2. Create or select a dedicated workspace in Slack.
-3. Go to: https://api.slack.com and create a new app from scratch.
-   ![alt text](docs/create_app_slack.png)
-4. Once the app has been created, under the section ``Add features`` go to the option ``Permissions`` and under the section ``Scopes`` enable the scopes:
-   * **``chat:write``** to enable the notifier to write into the workspace.
-   * **``chat:write.public``** to enable the notifier to write into the channels where the app isn't a member. 
-5. Install the app into the workspace.
-   ![alt text](docs/install_app_slack.png)
-6. This will provide the token to connect the Slack notifier.
+  * ##### Backfill
+    The needs to be ran manually to catchup all runs previous to one point in time and between a range - For doing so, it's necessary to run the command [``airflow dags backfill --start-date << YYYY-mm-dd >> --end-date << YYYY-mm-dd >> << DAG Identifier >>``](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill)
 
+    > [!NOTE]
+    > * It's not necessary to pause/unpause the DAG in order to perform the backfill.
+    > 
+    > * To rerun failed tasks, add the parameter ``--rerun-failed-tasks`` this will retry to run failed task 1 time everytime the command is executed.
+    >
+    > * To reset the DAG runs, add the parameter ``--reset-dagruns`` all the dagruns will be reset and will run the task the amount of ``retries=N``specified within the backfill datetime range.
+    >
+    > * To disable the retrties, add the parameter ``--diable-retry`` and the task will fail at first run.
+    >
+    > * To run the backfill in backward order, add the parameter ``--run-backwards`` and it'll run all DAGs in reverse order.
 
-## Amazon MWAA
-https://s.monica.im/search/I-require-a-d5brPHnXJwa5RtmEyXBzcD
+* **Max active runs**: This can be setup by setting ``max_active_run_per_dag=N`` within the Airflow config file, or by setting the parameter ``max_active_runs=N``in the DAG declaration.
+  > [!CAUTION]
+  > This can deadlock the DAGs when performing backfill or catching up, meaning that the Queue will be clogged and will impide to the next executing from starting.
+  
+  **One way to solve this issue**:
+  1. Dedicate a pool of workers to run the backfill.
+  2. Clone the DAG.
+  3. Use the clone to backfill the DAG.
+  4. Finally, add to the backfill command the parameter ``--pool << Pool Identifier >>``
+
+* Always develop DAGs ensuring that are built under the principle that they must be **INDEMPOTENT**, meaning that the DAG must be stateless and must not depend from previous states to run successfully.
+  
+* **As best practice**, always store data in UTC and display it in local timezone. The timezone can be configured globally across all the Airflow platform by setting the configuration ``default_timezone=utc``. Utilize <code style="background:rgb(45, 67, 126)">[**pendulum**](https://pypi.org/project/pendulum/)</code>, since it's the default datetime package used by Airflow to deal with datetime values and their timezones.
+
+## [Amazon MWAA](https://s.monica.im/search/I-require-a-d5brPHnXJwa5RtmEyXBzcD)
 Amazon Managed Workflows for Apache Airflow and allows to run Apache Airflow workflows in a managed environment within AWS. The components it manages are: 
 
 * **Scheduler**: Parses and monitors all DAGS, to then queue the tasks for execution. MWAA deploys the scheduler as an AWS Fargate cluster with a minimum of 2 schedulers. 
