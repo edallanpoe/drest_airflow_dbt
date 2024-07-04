@@ -608,12 +608,14 @@ To implement pools in Apache Airflow, you can define them in your DAG definition
   * ##### Catchup
     When catchup is enabled Airflow will run all the times between the start_date and current date according to the schedule, in this case it'll run 14 times to catchup the DAG with the currentruns.
     > [!NOTE]
+    >
     > It's strongly recommended to set ``catchup=False`` unless necessary, otherwise it'll N times intervals to catch up with the current time.
 
   * ##### Backfill
     The needs to be ran manually to catchup all runs previous to one point in time and between a range - For doing so, it's necessary to run the command [``airflow dags backfill --start-date << YYYY-mm-dd >> --end-date << YYYY-mm-dd >> << DAG Identifier >>``](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill)
 
     > [!NOTE]
+    >
     > * It's not necessary to pause/unpause the DAG in order to perform the backfill.
     > 
     > * To rerun failed tasks, add the parameter ``--rerun-failed-tasks`` this will retry to run failed task 1 time everytime the command is executed.
@@ -626,6 +628,7 @@ To implement pools in Apache Airflow, you can define them in your DAG definition
 
 * **Max active runs**: This can be setup by setting ``max_active_run_per_dag=N`` within the Airflow config file, or by setting the parameter ``max_active_runs=N``in the DAG declaration.
   > [!CAUTION]
+  > 
   > This can deadlock the DAGs when performing backfill or catching up, meaning that the Queue will be clogged and will impide to the next executing from starting.
   
   **One way to solve this issue**:
