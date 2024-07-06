@@ -394,7 +394,9 @@ Data orchestration is the process of coordinating and automating ETL and integra
 
 ![alt text](docs/airflow_comps_hl.png)
 
-**Web Server**: Handles and connects the entire platform and serves the user interface.
+#### Web Server
+Handles and connects the entire platform and serves the user interface.
+![alt text](docs/airflow_webserver.png)
 
 **Metadata Database**: Stores the metadata coming from all DAGs, Global configurations, executions, and schedulers.
 
@@ -539,7 +541,6 @@ Install necessary dependencies for Slack notifications using <code style="backgr
 
 Explore the How-to Guide for Slack notifications on the Apache Airflow website for detailed instructions [[ref](https://airflow.apache.org/docs/apache-airflow-providers-slack/stable/notifications/slack_notifier_howto_guide.html)].
 
-
 ##### Email Notifications:
 Apache Airflow provides flexibility in setting up email notifications for task failures, retries, or successes 
 
@@ -547,6 +548,30 @@ Configure email alerts within your Airflow tasks to receive notifications via em
 
 ##### Custom Python Functions:
 You can also create custom Python functions to trigger notifications or alerts based on specific conditions within your DAGs [[ref](https://medium.com/@quedi.zata/alerting-task-failed-in-dags-airflow-to-slack-channel-5e206b3e30a6)].
+
+### SubDAGs
+This components to modularize DAGs as components of other ones. This requires to utilize a factory function to create the sub dags and then an specialized operator named SubDagOperator to run them. Notes to take into account:
+> [!TIP]
+>
+> * The main DAGs executes the SubDAGs as normal tasks.
+> * Airflow UI only shows the main DAG.
+> * SubDAGs must have the same schedule as the parent.
+> * Be careful with these objects.
+> * SequentialExecutor is the default executor for SubDAGs and it will execute the tasks within them in sequential order.
+
+### Branching
+Mechanism allowing the DAGs to choose different paths under different conditions met by the results of preceding tasks, the common Operator to use is ``BranchPythonOperator``. **NEVER** let a path of a branch without step, as best practice is better to add a dummy step instead.
+
+### Triggers
+Mechanisms used to initiate or pause the execution of tasks within DAGs until certain conditions are met. the scheduler in Apache Airflow monitors tasks and DAGs, triggering task instances when their dependencies are satisfied. Triggers can be defined with specific rules such as 'all_done', 'all_failed' or 'all_success', indicating when tasks should be executed based on the completion status of other tasks [[ref](https://airflow.apache.org/docs/apache-airflow/1.10.2/scheduler.html)]. 
+#### Common rules:
+* **``all_done``**: It'll trigger when all upstream tasks have finished.
+* **``all_failed``**: Trigger only if all upstream tasks have failed.
+* **``all_success``**: Trigger only if all upstream tasks have finished successfully.
+* **``one_failed``**: Runs only if one of the upstream tasks has failed. 
+* **``one_succes``**: Runs as soon as one upstream task has succeeded.
+* **``none_failed``**: Runs only if none of the upstream tasks have failed.
+* **``none_skipped``**: Trigger only if all upstream tasks have been executed.
 
 #### Callback Options
 In the context of Apache Airflow, besides notifiers, there are several available callback options that can be utilized to trigger actions based on specific events or states within tasks and Directed Acyclic Graphs (DAGs).
@@ -560,7 +585,8 @@ In the context of Apache Airflow, besides notifiers, there are several available
 * **Pre-execution Callbacks**: Pre-execution callbacks are triggered before executing a task and can be used to perform tasks such as configuration setup or environment checks [[ref](https://stackoverflow.com/questions/57515434/why-do-i-get-no-such-table-error-when-installing-apache-airflow-on-mac)]. These callbacks help ensure that necessary conditions are met before task execution.
 
 ### Pools
-Is a feature that allows to limit the execution parallelism on specific sets of tasks. This then helps to manage the allocation of resources, prioritize taks and prevent over-utilization within the workflows. 
+Is a feature that allows to limit the execution parallelism on specific sets of tasks. This then helps to manage the allocation of resources, prioritize taks and prevent over-utilization within the workflows. Using is a good control for limiting parallelism and prioritizing tasks. e.g. If there is a source API that only supports 1 request at a time, and there are several tasks that require to impact that API from different DAGs. Here enters into play the pools, because it's possible to coordinated such executions in a sequetial manner by setting the amount of available slots to 1 within a pool, meaning that it's only that all tasks within the queue only have 1 active spot to execute oblying them to execute 1 by 1 until the queue has been emptied.
+
 
 #### Resource Management:
 Pools are utilized to limit the concurrency of a specific set of tasks within Airflow. By defining pools, you can allocate a maximum number of resources or slots for executing tasks concurrently [[ref](https://s.monica.im/search/What-is-a-po-rFKofzw5ytnt4mJg2SMEvH?pro=1)]. This allocation helps in avoiding resource contention and ensures that tasks are executed efficiently without overwhelming the system.
@@ -570,6 +596,37 @@ With pools in Apache Airflow, you can regulate the parallel execution of tasks, 
 
 #### Practical Implementation:
 To implement pools in Apache Airflow, you can define them in your DAG definition file. By assigning tasks to specific pools, you can enforce limitations on how many instances of those tasks can run concurrently, ensuring efficient resource management and improved task scheduling within your workflows.
+
+### Jinja Integration
+#### Templating
+Enables to interpolate values or parameters by setting placeholders wihtin ``{{ }}`` and it's based on Jinja templating.
+
+#### Macros
+Functions predefined by Airflow that can be called using a Jinja placeholder. e.g. ``{{ ds }}`` get the current date of the platform. Also, it's possbile to call variables created within the platform, which are environment variable [[ref](https://airflow.apache.org/docs/apache-airflow/1.10.13/macros-ref.html)].
+
+### Queues
+Queues are used to control task distribution among workers, ensure task prioritization, and manage task dependencies efficiently. Each task can be assigned to a specific queue, which allows for better organization and control over task execution. By default, tasks are assigned to a default queue, but you can also specify custom queues based on your requirements.
+
+![](docs/airflow-parallelism.png)
+
+* **pallelism**: Configuration to determine the amount of processes running concurrently.
+* **max_active_run_per_dag**: Maximum number of DAGs that can run at the same time.
+* **dag_concurrency**: Maximum number of tasks that can run at the same time. 
+* **worker_concurrency**: Maximum number of tasks that can be active at the same time. 
+
+To configure queues in Apache Airflow, you can define custom queues in the Airflow configuration file. You can specify the queues that tasks should be assigned to based on different parameters such as task priority, resources required, or any other custom criteria. By configuring queues effectively, you can ensure that tasks are executed in an optimized and organized manner, improving the overall performance and efficiency of your workflow. Meaning that this enables scaling mechanisms to the cluster at anytime to stand rapid increases in demand.
+
+#### Queue & Worker Binding
+![](docs/airflow-queue.png)
+
+#### Celery
+Asynchronous distributed engine that allows to horizontally scale out the Airflow cluster. Celery enables a high availability state of workers by repleneshing workers when they go down. This requires a message broker component like RabbitMQ or Redis, and enables to set different queues of workers.
+
+![alt text](docs/airflow-Executor_Celery.png)
+
+##### Drawbacks
+* Another component to maintain.
+* It's necessary to perform worker maintenance periodically.
 
 ## Airflow - Hands On!
 ### Configuring Slack as Alerting Channel
@@ -640,6 +697,52 @@ To implement pools in Apache Airflow, you can define them in your DAG definition
 * Always develop DAGs ensuring that are built under the principle that they must be **INDEMPOTENT**, meaning that the DAG must be stateless and must not depend from previous states to run successfully.
   
 * **As best practice**, always store data in UTC and display it in local timezone. The timezone can be configured globally across all the Airflow platform by setting the configuration ``default_timezone=utc``. Utilize <code style="background:rgb(45, 67, 126)">[**pendulum**](https://pypi.org/project/pendulum/)</code>, since it's the default datetime package used by Airflow to deal with datetime values and their timezones.
+
+* **``TriggerDagRunOperator``**: It's used for controlling the execution of another DAG.
+  
+* **``ExternalTaskSensor``**: Allows to wait for an external task (from another DAG) to complete.
+  > [!TIP]
+  > 
+  > * **Keep** the same schedule between the DAGs or use ``excution_delta`` or ``execution_date_fn`` parameters for it.
+  > * ExternalTaskSensor is different from TriggerDagRunOperator. (Using both leads to get the sensor stuck)
+  > * Mode "poke" is used by default, but it's also possible to use "reschedule" if needed.
+
+* It's strongly recommended to set the parallelism of the Airflow cluster to the number of available cores - 1. Never set ``parallelism=0`` because Airflow will utilize all cores, which could lead to issues by competing for resources against the OS processes.
+* 
+
+
+### Unit testing
+Standard and basic testing library: <code style="background:rgb(45, 67, 126)">[**pytest**](https://pypi.org/project/pytest/)</code>
+
+How to test a DAG, It can be derived into five different categories:
+#### DAG Validation Tests
+Common tests to apply to all DAGs. This round of tests need to be performed at dev environment.
+* Check if valid.
+* Check if there is no cycles/loops within DAGs.
+* Check default arguments.
+* High level testing.
+
+#### DAG/Pipeline Definition Tests
+This round of tests need to be performed at dev environment.
+* Check total number of tasks expected behavior.
+* Check nature the nature of tasks.
+* Check upstream/downstream dependencies.
+
+#### Unit Testing
+This round of tests need to be performed at dev environment.
+* Check the logic.
+
+#### Integration Tests
+This round of tests need to be performed at test/QA environment.
+* Check if tasks can exchange data.
+* Check the input of tasks.
+* Check dependencies between multiple tasks.
+
+#### E2E Pipeline Tests
+This round of tests need to be performed at UAT environment.
+* Check if the output is correct.
+* Check the full logic.
+* Check performances.
 
 ## [Amazon MWAA](https://s.monica.im/search/I-require-a-d5brPHnXJwa5RtmEyXBzcD)
 Amazon Managed Workflows for Apache Airflow and allows to run Apache Airflow workflows in a managed environment within AWS. The components it manages are: 
