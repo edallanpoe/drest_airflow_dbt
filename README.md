@@ -436,8 +436,7 @@ Activities in the Apache Airflow context refer to the tasks that are executed wi
 ### DAGs (Directed Acyclic Graphs)
 In Apache Airflow, DAGs are at the core of organizing and executing tasks, which are a collection of tasks to run on an orchestrated basis, structured in a graph structure to reflect their dependencies and relationships, meaning that the prior tasks must finish successfully before executing the downstream tasks unless the trigger comes from a failure status.
 
-Main types of relationships:
-
+#### Main types of relationships
 * **Upstream relationship**: This refers to tasks that need to be completed before the current task can start. In other words, tasks that are upstream in the DAG must successfully run before the current task is triggered.
 
 * **Downstream relationship**: On the other hand, downstream tasks depend on the completion of the current task. These tasks will only be executed if the current task is successful.
@@ -708,7 +707,18 @@ Asynchronous distributed engine that allows to horizontally scale out the Airflo
   > * Mode "poke" is used by default, but it's also possible to use "reschedule" if needed.
 
 * It's strongly recommended to set the parallelism of the Airflow cluster to the number of available cores - 1. Never set ``parallelism=0`` because Airflow will utilize all cores, which could lead to issues by competing for resources against the OS processes.
-* 
+
+### Kubernetes Cluster for Airflow
+#### Kubernetes cluster architecture
+![](docs/airflow-K8.png)
+* Runs the tasks on dedicated pods, meaning One task = One pod
+* Task-level pod configuration.
+* Auto-Scaling enabled by default.
+* Scheduler subscribe to K8 event stream.
+* DAG distribution.
+  * Git clone with init-container for each Pod. It means that it runs a preparatory script before running the container.
+  * Mount volume with DAGs
+  * Build image with the DAG codes.
 
 
 ### Unit testing
